@@ -1,79 +1,93 @@
-import {View, Text, Image, TouchableOpacity, ScrollView} from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
-import {COLORS, FONTS, images, SIZES} from "../../constants";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { COLORS, FONTS, images, SIZES } from "../../constants";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {authStore} from "../store/authStore";
-import {StatusBar} from "expo-status-bar";
+import { authStore } from "../store/authStore";
+import { StatusBar } from "expo-status-bar";
 import Container from "../components/Container";
-import {ScheduleItem} from "../components/ScheduleItem";
-
+import { ScheduleItem } from "../components/ScheduleItem";
+import PageContainer from "../components/PageContainer";
 
 export const Settings = () => {
-    return (
-        <View>
-            <StatusBar hidden={false}/>
-            <Container>
-                <Image
-                    source={images.Billy}
-                    style={{
-                        height: 100,
-                        width: 100,
-                        marginBottom: 5,
-                        borderRadius: 50,
-                    }}
-                />
-                <Text
-                    style={{
-                        fontSize: SIZES.h2,
-                        marginBottom: 2,
-                    }}
-                >
-                    Billy Harington
-                </Text>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        width: 180
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: SIZES.body4,
-                            color: COLORS.gray,
-                            marginRight: 25
-                        }}
-                    >@idAsswecan
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: SIZES.body4,
-                            color: COLORS.gray
-                        }}
-                    > ИКПИ-14
-                    </Text>
-                </View>
+  return (
+    <View>
+      <StatusBar hidden={false} />
+    
+        <SafeAreaView>
+        <PageContainer>
+        <View
+          style={{
+            position: "absolute",
+            left: 20,
+            right: 20,
+            alignItems: "center",
+            width: wp(90),
+            height: hp(100),
+            top: 15,
+          }}
+        >
+          <Image
+            source={images.Billy}
+            style={{
+              height: 100,
+              width: 100,
+              marginBottom: 5,
+              borderRadius: 50,
+            }}
+          />
+          <Text
+            style={{
+              fontSize: SIZES.h2,
+              marginBottom: 2,
+            }}
+          >
+            Billy Harington
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              width: 180,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: SIZES.body4,
+                color: COLORS.gray,
+                marginRight: 25,
+              }}
+            >
+              @idAsswecan
+            </Text>
+            <Text
+              style={{
+                fontSize: SIZES.body4,
+                color: COLORS.gray,
+              }}
+            >
+              {" "}
+              ИКПИ-14
+            </Text>
+          </View>
 
-                <TouchableOpacity
-                    onPress={() => authStore.exit()}
-                    style={{
-
-
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: COLORS.red,
-                            fontSize: 15
-                        }}
-                    >
-                        Log out
-                    </Text>
-                </TouchableOpacity>
-
-            </Container>
-
+          <TouchableOpacity onPress={() => authStore.exit()} style={{}}>
+            <Text
+              style={{
+                color: COLORS.red,
+                fontSize: 15,
+              }}
+            >
+              Log out
+            </Text>
+          </TouchableOpacity>
         </View>
-    );
-}
+      </PageContainer>
+        </SafeAreaView>
+      
+    </View>
+  );
+};

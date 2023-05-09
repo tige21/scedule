@@ -1,11 +1,12 @@
 import React from "react";
-import {Image, SafeAreaView, StyleSheet, Text, View} from "react-native";
-
+import {Image, StyleSheet, Text, View} from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {Btn} from "../components/Btn";
 import {StatusBar} from "expo-status-bar";
 import { Ionicons } from '@expo/vector-icons';
 import {COLORS, SIZES, FONTS, images, icons} from "../../constants";
 import {Form} from "../components/Form";
+import PageContainer from "../components/PageContainer";
 
 
 export const Register = ({navigation}: any) => {
@@ -17,15 +18,19 @@ export const Register = ({navigation}: any) => {
 
     return(
         <SafeAreaView style={styles.cn}>
-            <Ionicons name="chevron-back" size={24} color="#5090F3" style={styles.back} onPress={handleExit}/>
-            <Image source={images.schedule} style={styles.img}/>
-            <Text style={styles.text}>Registration</Text>
-            <Text style={styles.p}>сохраняйте свое расписание)))</Text>
-            <Form placeholder="Username"/>
-            <Form placeholder="Password"/>
-            <Form placeholder="Confirm password"/>
-            <Btn title="Register" bcolor="#5090F3" color="white"/>
-            <StatusBar hidden={true}/>
+
+            <PageContainer>
+                <Ionicons name="chevron-back" size={24} color="#5090F3" style={styles.back} onPress={handleExit}/>
+                <Image source={images.schedule} style={styles.img}/>
+                <Text style={styles.text}>Registration</Text>
+                <Text style={styles.p}>сохраняйте свое расписание)))</Text>
+                <Form placeholder="Username"/>
+                <Form placeholder="Password"/>
+                <Form placeholder="Confirm password"/>
+                <Btn title="Register" bcolor="#5090F3" color="white"/>
+                <StatusBar hidden={true}/>
+            </PageContainer>
+            
         </SafeAreaView>
     );
 

@@ -17,7 +17,7 @@ const SignIn = observer(({navigation}: any) => {
             flex: 1
 
         }}>
-            <StatusBar hidden={false}/>
+            <StatusBar hidden={true}/>
 
             <KeyboardAwareScrollView>
                 {/*Logo*/}
@@ -26,6 +26,9 @@ const SignIn = observer(({navigation}: any) => {
                     paddingTop: 24*3,
                     marginBottom: 30,
                 }}>
+
+                        
+                    
                     <Image source={images.schedulelogo}
                            resizeMode='contain'
                            style={{

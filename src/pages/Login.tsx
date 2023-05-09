@@ -1,11 +1,13 @@
 import React from "react";
-import {Image, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Image,StyleSheet, Text, TextInput, View} from "react-native";
 import {Form} from "../components/Form";
 import {Btn} from "../components/Btn";
 import {StatusBar} from "expo-status-bar";
 import { observer } from "mobx-react-lite";
 import { authStore } from "../store/authStore";
 import {COLORS, SIZES, FONTS, images, icons} from "../../constants";
+import PageContainer from "../components/PageContainer";
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export const Login = observer(({navigation}: any)=>{
 
@@ -19,21 +21,26 @@ export const Login = observer(({navigation}: any)=>{
 
     return(
         <SafeAreaView style={styles.cn}>
-            <Image style={styles.img} source={images.schedule}/>
-            <Text style={{fontSize: SIZES.h1}}>Login</Text>
-            <Text style={styles.p}>сохраняйте свое расписание)))</Text>
-            <Form placeholder="Username" onChangeText={(text:string) => authStore.user(text)}/>
-            <Form placeholder="Password" onChangeText={(text:string) => authStore.password(text)}/>
-            <Btn title="Login" color="#5090F3" onPress={() => authStore.auth(authStore.Password, authStore.Username)}/>
 
-            <View style={{display: "flex", flexDirection: "row", paddingTop: 33, alignItems: "center"}}>
-                <View style={styles.line}></View>
-                <Text style={[styles.p]}>atau</Text>
-                <View style={styles.line}></View>
-            </View>
 
-            <Btn title="Register" bcolor="#fff" color="#5090F3" onPress={registerLoading}/>
-            <StatusBar hidden={true}/>
+            <PageContainer>
+                <Image style={styles.img} source={images.schedule}/>
+                <Text style={{fontSize: SIZES.h1}}>Login</Text>
+                <Text style={styles.p}>сохраняйте свое расписание)))</Text>
+                <Form placeholder="Username" onChangeText={(text:string) => authStore.user(text)}/>
+                <Form placeholder="Password" onChangeText={(text:string) => authStore.password(text)}/>
+                <Btn title="Login" color="#5090F3" onPress={() => authStore.auth(authStore.Password, authStore.Username)}/>
+
+                <View style={{display: "flex", flexDirection: "row", paddingTop: 33, alignItems: "center"}}>
+                    <View style={styles.line}></View>
+                    <Text style={[styles.p]}>atau</Text>
+                    <View style={styles.line}></View>
+                </View>
+
+                <Btn title="Register" bcolor="#fff" color="#5090F3" onPress={registerLoading}/>
+                <StatusBar hidden={true}/>
+            </PageContainer>
+            
 
 
 
