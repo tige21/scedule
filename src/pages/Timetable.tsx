@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, Image, StatusBar} from "react-native";
 import Container from "../components/Container";
 import {COLORS, FONTS, images, SIZES} from "../../constants";
-import { timeTableStore } from '../store/timeTableStore';
 import { ScheduleItem } from '../components/ScheduleItem';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { ScrollView } from 'react-native-gesture-handler';
