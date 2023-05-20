@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import {View, Text, Image, TouchableOpacity, StatusBar} from "react-native";
 import {COLORS, SIZES, images, icons} from "../../../constants";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FormInput from "../../components/FormInput";
-import {authStore} from "../../store/authStore";
 import {observer} from "mobx-react-lite";
-import {CustomSwitcher} from "../../components/CustomSwitcher";
+// import {CustomSwitcher} from "../../components/CustomSwitcher";
 import TextButton from "../../components/TextButton";
 import {Btn} from "../../components/Btn";
 import {Ionicons} from "@expo/vector-icons";
+import { IRegisterDto } from "../../services/authService/auth.service";
+import { saveTokenToStorage } from "../../store/auth/auth.helper";
+import { useRegisterUserMutation } from "../../api/api";
 
 
 const SignUp = observer(({navigation}: any) => {
+
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [registerUser, {isError, isSuccess, error, data}] = useRegisterUserMutation()
+  
+
+    const onSubmit = () => {
+      const payload: IRegisterDto = {email, password}
+      console.log(payload)
+      registerUser(payload)
+      navigation.goBack();
+      console.log(data)
+      return data
+    }
 
     const handleExit = () => {
         navigation.goBack();
@@ -103,14 +120,14 @@ const SignUp = observer(({navigation}: any) => {
                                 style={{
                                     height: 20,
                                     width:20,
-                                    tintColor: authStore.Username == '' ? COLORS.gray : COLORS.green,
+                                    tintColor: email == '' ? COLORS.gray : COLORS.green,
                                 }
                                 }
                             />
 
                         </View>
                     }
-                    onChangeText={(text:string) => {authStore.user(text)}}
+                    onChangeText={setEmail}
                 />
 
                 <FormInput
@@ -128,17 +145,18 @@ const SignUp = observer(({navigation}: any) => {
                                 style={{
                                     height: 20,
                                     width:20,
-                                    tintColor: authStore.Username == '' ? COLORS.gray : COLORS.green,
+                                    tintColor: password == '' ? COLORS.gray : COLORS.green,
                                 }
                                 }
                             />
 
                         </View>
                     }
-                    onChangeText={(text:string) => {authStore.user(text)}}
+                    onChangeText={setPassword}
                 />
 
-                <FormInput
+                    {/* еще одна форма для повторного ввода пароля */}
+                {/* <FormInput
                     label='Повторите пароль'
                     placeholder=''
                     onChangeText={(text:string) => authStore.password(text)}
@@ -149,7 +167,7 @@ const SignUp = observer(({navigation}: any) => {
                                 alignItems: 'flex-end',
                                 justifyContent: 'center'
                             }}
-                            onPress={() => authStore.setEye()}
+                            onPress={onSubmit}
                         >
                             <Image
                                 source={authStore.eye ? icons.eye_close : icons.eye}
@@ -162,7 +180,7 @@ const SignUp = observer(({navigation}: any) => {
                             />
                         </TouchableOpacity>
                     }
-                />
+                /> */}
 
 
                 {/*Main btn*/}
@@ -176,6 +194,7 @@ const SignUp = observer(({navigation}: any) => {
                         title="Зарегистрироваться"
                         color={COLORS.white}
                         bcolor={COLORS.primary}
+                        onPress={onSubmit}
                     />
                 </View>
 

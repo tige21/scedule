@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { Btn } from "../components/Btn";
 import { authStore } from "../store/authStore";
 import { observer } from "mobx-react-lite";
@@ -26,55 +26,391 @@ import { useSelector } from "react-redux";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { countSlice } from "../store/reducers/countSlice";
-import { useAmogusQuery } from "../api/api";
+import { Agenda } from "react-native-calendars";
+import { StatusBar } from "react-native";
+import { ScheduleItem } from "../components/ScheduleItem";
+
+interface Item {
+  pairStart: string;
+  pairNum: string;
+  pairEnd: string;
+  pairTitle:
+  string;
+  teacher: string;
+  auditory: string;
+  pairType: string;
+  name?: string;
+    height?: number;
+    day?: string;
+}
+
 
 export const Main = observer(() => {
-  const { count } = useAppSelector((state) => state.count);
-
-  const { increment, decrement } = countSlice.actions;
-
-
   const dispatch = useAppDispatch();
 
-  const { data, isLoading } = useAmogusQuery();
-    console.log(data)
 
-  const exit = () => {
-    authStore.token = "";
-    authStore.Username = "";
-    authStore.Password = "";
+
+  const [items, setItems] = useState<{[key: string]: Item[]}>({
+    "2023-05-15": [
+      {
+        pairStart: "16:30",
+        pairEnd: "18:05",
+        pairNum: '1',
+        pairTitle: "Организация и управление предприятиями",
+        teacher: "Исаков А.В.",
+        auditory: "ауд.: 501; Б22/2",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "18:15",
+        pairNum: '1',
+        pairEnd: "19:50",
+        pairTitle: "Высшая математика",
+        teacher: "Мкртычян П.З.",
+        auditory: "ауд.: 700; Б22/1",
+        pairType: "Лекция",
+      },
+    ],
+    "2023-05-16": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-17": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-18": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-19": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-20": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-21": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-22": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-23": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-24": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+    "2023-05-25": [
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "10:30",
+        pairNum: '1',
+        pairEnd: "12:00",
+        pairTitle:
+          "Элективные дисциплины по физической культуре и спорту",
+        teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
+        auditory: "ауд.: Спортивные площадки",
+        pairType: "Практические занятия",
+      },
+      {
+        name: 'kek',
+        height: 2,
+        day: 'amogus',
+        pairStart: "13:00",
+        pairNum: '2',
+        pairEnd: "14:35",
+        pairTitle: "Физика",
+        teacher: "Кузенов С.Р.",
+        auditory: "ауд.: 317; Б22/1",
+        pairType: "Практические занятия",
+      },
+    ],
+
+  })
+
+  
+  // один из вариантов для отображения одного предмета
+  const renderItem = (item: any) => {
+    return (
+      <TouchableOpacity style={styles.item}>
+        <View style ={{
+          flexDirection: 'row',
+        
+          
+        }}>
+          <View style={{flexDirection: 'column'}}>
+              <Text style={{fontSize:20}}>{item.pairNum}</Text>
+              <Text>{item.pairStart}</Text>
+              <Text>{item.pairEnd}</Text>
+          </View>
+
+          <View style={{
+            flexDirection: 'column',
+            height: "100%",
+            marginLeft: 10,
+            borderColor:'red',
+            borderBottomWidth:1,
+            borderTopWidth:1
+          }}>
+              <Text style={{fontSize:20}}>{item.pairTitle}</Text>
+              <Text>{item.auditory}</Text>
+              <Text>{item.pairType}</Text>
+              <Text style={{fontSize: 7}}>{item.teacher}</Text>
+
+
+            </View>
+
+        </View>
+
+
+        <Text>{item.pairTitle}</Text>
+      </TouchableOpacity>
+    );
   };
 
-  if (isLoading) {
-    return (
-      <SafeAreaView
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: 50,
-        }}
-      >
-        <ActivityIndicator size={"large"} />
-      </SafeAreaView>
-    );
-  }
+ 
+  // Код для подгрузки данных
+  // if (isLoading) {
+  //   return (
+  //     <SafeAreaView
+  //       style={{
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         marginTop: 50,
+  //       }}
+  //     >
+  //       <ActivityIndicator size={"large"} />
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
-    <View>
-      <StatusBar hidden={false} />
-      <View
-        style={{
-          marginTop: 35,
-        }}
-      >
-        
-      </View>
-      <Btn title={"+"} onPress={() => dispatch(increment())} />
-      <Text style={styles.counter}>{count}</Text>
-      <Btn title={"-"} onPress={() => dispatch(decrement())} />
-
-      <StatusBar hidden={true} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Agenda
+        selected="2023-05-15"
+        items={items}
+        renderItem={ScheduleItem}
+      />
+    </SafeAreaView>
   );
 });
 
@@ -82,13 +418,26 @@ const styles = StyleSheet.create({
   all: {
     backgroundColor: "white",
   },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  item: {
+    backgroundColor: "white",
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+  },
+  itemText: {
+    color: "#888",
+    fontSize: 16,
+  },
   cn: {
     flex: 1,
     paddingTop: 102,
     backgroundColor: COLORS.white,
-  },
-  container: {
-    flex: 1,
   },
   itemContainer: {
     backgroundColor: "#fff",

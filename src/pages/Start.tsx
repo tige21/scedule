@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,17 +10,25 @@ import { observer } from "mobx-react-lite";
 import SignIn from "./Authentication/SignIn";
 import { TabN } from "../navigation/Tab";
 import SignUp from "./Authentication/SignUp";
-import RegisterScreen from "./Authentication/RegisterScreen";
-
+import { RegisterScreen } from "./Authentication/RegisterScreen";
+import { getAccessToken, isAuthenticated, isToken } from "../store/auth/auth.helper";
+import Cookies from "js-cookie";
+import { getAsyncStorage } from "../utils/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 const Stack = createNativeStackNavigator();
 
 export const Start = observer(() => {
-  const token = authStore.token;
+
+
+  const [ios, setIos] = useState(true)
+  const {refreshToken} = useAppSelector(state => state.auth)
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {!token ? (
+      {!ios ? (
           <>
             <Stack.Screen
               name="SignIn"
@@ -34,7 +42,7 @@ export const Start = observer(() => {
             /> */}
             <Stack.Screen
               name="SignUp"
-              component={RegisterScreen}
+              component={SignUp}
               options={{ headerShown: false }}
             />
           </>

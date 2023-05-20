@@ -11,8 +11,21 @@ import { StatusBar } from "expo-status-bar";
 import Container from "../components/Container";
 import { ScheduleItem } from "../components/ScheduleItem";
 import PageContainer from "../components/PageContainer";
+import { isToken, logout } from "../store/auth/auth.helper";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { authSlice } from "../store/auth/authSlice";
 
 export const Settings = () => {
+
+  const dispatch = useAppDispatch()
+  
+  const {removeUser} = authSlice.actions
+
+  const handleLogout = async() => {
+    await logout()
+    dispatch(removeUser())
+  }
+
   return (
     <View>
       <StatusBar hidden={false} />
@@ -74,7 +87,7 @@ export const Settings = () => {
             </Text>
           </View>
 
-          <TouchableOpacity onPress={() => authStore.exit()} style={{}}>
+          <TouchableOpacity onPress={handleLogout} style={{}}>
             <Text
               style={{
                 color: COLORS.red,

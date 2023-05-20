@@ -1,15 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
 import { COLORS, SIZES, images, icons } from "../../../constants";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import FormInput from "../../components/FormInput";
-import { authStore } from "../../store/authStore";
 import { observer } from "mobx-react-lite";
-import { CustomSwitcher } from "../../components/CustomSwitcher";
+// import { CustomSwitcher } from "../../components/CustomSwitcher";
 import TextButton from "../../components/TextButton";
 import { Btn } from "../../components/Btn";
+import { useIsRightPasswordQuery, useLoginMutation } from "../../api/api";
+import { saveToStorage, saveTokenToStorage } from "../../store/auth/auth.helper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { authSlice } from "../../store/auth/authSlice";
 
 const SignIn = observer(({ navigation }: any) => {
+
+
+  const [eye, setEye] = useState(false)
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [login, {data, isError, error, isLoading}] = useLoginMutation()
+
+  // const isPassword = useIsRightPasswordQuery()
+
+  const {addUser} = authSlice.actions
+
+  const dispatch = useAppDispatch()
+  
+  const onSubmit = async () => {
+    const payload = {email, password}
+
+    login(payload)
+    
+    if(data?.accessToken){
+      const {accessToken, refreshToken} = data
+      saveToStorage(data);
+      dispatch(addUser(data))
+    }
+    return data
+  }
+
+  // Здесь будет валидация
+  // const onChangeEmail = () => {
+    
+  // }
+
+  // const onChangePassword = async () => {
+  //   if(isPassword !== undefined) {
+  //     setEye(isPassword)
+  //   }
+  //   setEye(false)
+    
+  // }
+
   return (
     <View
       style={{
@@ -73,7 +117,7 @@ const SignIn = observer(({ navigation }: any) => {
 
         <FormInput
           label="Email"
-          placeholder=""
+          placeholder=''
           appendComponent={
             <View
               style={{
@@ -86,21 +130,19 @@ const SignIn = observer(({ navigation }: any) => {
                   height: 20,
                   width: 20,
                   tintColor:
-                    authStore.Username == "" ? COLORS.gray : COLORS.green,
+                    email == "" ? COLORS.gray : COLORS.green,
                 }}
               />
             </View>
           }
-          onChangeText={(text: string) => {
-            authStore.user(text);
-          }}
+          onChangeText={setEmail}
         />
 
         <FormInput
           label="Пароль"
-          placeholder=""
+          placeholder=''
           secureTextEntry={authStore.eye}
-          onChangeText={(text: string) => authStore.password(text)}
+          onChangeText={setPassword}
           appendComponent={
             <TouchableOpacity
               style={{
@@ -111,7 +153,7 @@ const SignIn = observer(({ navigation }: any) => {
               onPress={() => authStore.setEye()}
             >
               <Image
-                source={authStore.eye ? icons.eye : icons.eye_close}
+                source={eye ? icons.eye_close : icons.eye}
                 style={{
                   height: 20,
                   width: 20,
@@ -152,9 +194,7 @@ const SignIn = observer(({ navigation }: any) => {
             title="Войти"
             color={COLORS.white}
             bcolor={COLORS.primary}
-            onPress={() =>
-              authStore.auth(authStore.Password, authStore.Username)
-            }
+            onPress={onSubmit}
           />
         </View>
 

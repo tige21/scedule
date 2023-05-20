@@ -28,6 +28,7 @@
     "expo-font": "~10.2.0",
     "expo-splash-screen": "^0.18.2",
     "expo-status-bar": "~1.4.0",
+    "js-cookie": "^3.0.5",
     "mobx": "^6.6.2",
     "mobx-persist-store": "^1.1.2",
     "mobx-react": "^7.5.3",
@@ -36,6 +37,7 @@
     "react-dom": "18.0.0",
     "react-hook-form": "^7.43.9",
     "react-native": "^0.69.6",
+    "react-native-calendars": "^1.1297.0",
     "react-native-dropdown-select-list": "^1.0.23",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/js-cookie": "^3.0.3",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.69.1",
     "@types/react-redux": "^7.1.25",

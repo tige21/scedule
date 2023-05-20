@@ -2,8 +2,6 @@ import React, {FC} from 'react';
 import {View, Text, TextInput} from "react-native";
 import {COLORS, SIZES, FONTS, images, icons} from "../../constants";
 
-import {authStore} from "../store/authStore";
-
 interface props {
     label?: string,
     appendComponent?: React.ReactNode,
@@ -17,11 +15,6 @@ interface props {
 }
 
 const FormInput = ({label, appendComponent,placeholder,placeholderTextColor, secureTextEntry, keyboardType, autoCompleteType, autoCapitalize, onChangeText}: props) => {
-
-    const setFromForm = (text: string) =>{
-        authStore.fromForm = text
-    }
-
 
     return (
 

@@ -6,12 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 
-export const ScheduleItem = () => {
-    
-    const render = () => {
-
-    }
-    
+export const ScheduleItem = (item: any) => {
+        
     return(
         <View
             style={{
@@ -42,7 +38,7 @@ export const ScheduleItem = () => {
                         color: COLORS.white
                     }}
                 >
-                    Лекция
+                    {item.pairType}
                 </Text>
             </View>
 
@@ -64,7 +60,7 @@ export const ScheduleItem = () => {
                             fontSize: 20,
                         }}
                     >
-                        10:00
+                        {item.pairStart}
                     </Text>
 
                     <Text
@@ -73,7 +69,7 @@ export const ScheduleItem = () => {
                             color: COLORS.gray,
                         }}
                     >
-                        11:30
+                        {item.pairEnd}
                     </Text>
                 </View>
 
@@ -90,7 +86,7 @@ export const ScheduleItem = () => {
                             fontSize: 20,
                         }}
                     >
-                        Математика
+                        {item.pairTitle}
                     </Text>
 
                     <View 
@@ -102,7 +98,7 @@ export const ScheduleItem = () => {
 
                         <Ionicons name="person" size={15} color={COLORS.gray} />
 
-                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>Сорокин Иван Артёмович</Text>
+                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>{item.teacher}</Text>
 
                     </View>
 
@@ -114,7 +110,7 @@ export const ScheduleItem = () => {
 
                         <Ionicons name="navigate" size={15} color={COLORS.gray} />
 
-                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>120/1, просп.Большевиков, 22</Text>
+                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>{item.auditory}</Text>
 
                     </View>
 
