@@ -41,6 +41,7 @@ const SignIn = observer(({ navigation }: any) => {
     return data
   }
 
+
   // Здесь будет валидация
   // const onChangeEmail = () => {
     

@@ -3,39 +3,43 @@ import { View, Text} from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 import { COLORS } from "../../constants";
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 
 export const ScheduleItem = (item: any) => {
         
     return(
+
+        
         <View
             style={{
-                paddingTop: 15,
-                paddingBottom: 15,
-                position: 'relative',
-                left: 15,
-
+                backgroundColor: "white",
+                flex: 1,
+                borderRadius: 5,
+                padding: 10,
+                marginRight: 10,
+                marginTop: 17,
             }}
         >
             
             <View
                 style={{
+                    display: 'flex',
+                    flexDirection: 'row',
                     height: 20,
-                    width: 70,
                     backgroundColor: COLORS.orange,
                     borderRadius: 25,
-                    position: 'relative',
-                    left: 60,
+                    marginLeft: 45,
                     justifyContent: 'center',
-                    alignItems: 'center'
-                    
     
                 }}
             >
                 <Text
                     style={{
-                        color: COLORS.white
+                        color: COLORS.white,
+                         
+
                     }}
                 >
                     {item.pairType}
@@ -45,19 +49,20 @@ export const ScheduleItem = (item: any) => {
             <View
                 style={{
                     flexDirection: "row",
+                    flex: 1,
                 }}
             >
 
                 <View
                     style={{
                         flexDirection: 'column',
-                        alignItems: 'flex-end'
-                        
+                        alignItems: 'flex-end',
+                        marginLeft: -2,
                     }}
                 >
                     <Text
                         style={{
-                            fontSize: 20,
+                            fontSize: 12,
                         }}
                     >
                         {item.pairStart}
@@ -65,7 +70,7 @@ export const ScheduleItem = (item: any) => {
 
                     <Text
                         style={{
-                            fontSize: 15,
+                            fontSize: 10,
                             color: COLORS.gray,
                         }}
                     >
@@ -77,13 +82,15 @@ export const ScheduleItem = (item: any) => {
                     style={{
                         flexDirection: "column",
                         position: 'relative',
-                        left: 10
+                        marginLeft: 8,
                     }}
                 >
 
                     <Text
                         style={{
-                            fontSize: 20,
+                            flexShrink: 1,
+                            fontSize: 15,
+                            
                         }}
                     >
                         {item.pairTitle}
@@ -92,25 +99,27 @@ export const ScheduleItem = (item: any) => {
                     <View 
                         style={{
                             flexDirection: 'row',
-                            
+                            flex: 1, 
+                            marginTop: 3,
                         }}
                     >
 
-                        <Ionicons name="person" size={15} color={COLORS.gray} />
+                        <Ionicons name="person" size={9} color={COLORS.gray} />
 
-                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>{item.teacher}</Text>
+                        <Text style={{color: COLORS.gray, fontSize: 9, marginLeft: 5,}}>{item.teacher}</Text>
 
                     </View>
 
                     <View 
                         style={{
-                            flexDirection: 'row'
+                            flexDirection: 'row',
+                            marginTop: 3,
                         }}
                     >
 
-                        <Ionicons name="navigate" size={15} color={COLORS.gray} />
+                        <Ionicons name="navigate" size={9} color={COLORS.gray} />
 
-                        <Text style={{color: COLORS.gray, fontSize: 13, marginLeft: 5}}>{item.auditory}</Text>
+                        <Text style={{color: COLORS.gray, fontSize: 9, marginLeft: 5}}>{item.auditory}</Text>
 
                     </View>
 
@@ -119,7 +128,6 @@ export const ScheduleItem = (item: any) => {
             </View>
 
         </View>
-
     );
 
 }

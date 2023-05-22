@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, FONTS, icons } from "../../constants";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from '@expo/vector-icons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -28,9 +29,9 @@ export const TabN = () => {
         tabBarStyle: {
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
-          height: "11%",
-          opacity: 0.9,
-          elevation: 0,
+          // height: "11%",
+          height: 90,
+          // opacity: 0.9,
           position: "absolute",
 
           zIndex: 40,
@@ -40,41 +41,6 @@ export const TabN = () => {
       <Tab.Screen
         name="Main"
         component={Main}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                position: "absolute",
-                top: 15,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Feather
-                name="home"
-                size={focused ? 26 + 3 : 26}
-                color={focused ? COLORS.primary : COLORS.gray}
-              />
-
-              <Text
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontSize: 11,
-                  color: focused ? COLORS.primary : COLORS.gray3,
-                }}
-              >
-                Home
-              </Text>
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Timetable"
-        component={Timetable}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
@@ -100,7 +66,42 @@ export const TabN = () => {
                   color: focused ? COLORS.primary : COLORS.gray3,
                 }}
               >
-                Timetable
+                Расписание
+              </Text>
+            </View>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Timetable"
+        component={Timetable}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                position: "absolute",
+                top: 15,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome5
+                name="chalkboard-teacher"
+                size={focused ? 26 + 3 : 26}
+                color={focused ? COLORS.primary : COLORS.gray}
+              />
+
+              <Text
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: 11,
+                  color: focused ? COLORS.primary : COLORS.gray3,
+                }}
+              >
+                Преподаватели
               </Text>
             </View>
           ),
@@ -135,7 +136,7 @@ export const TabN = () => {
                   color: focused ? COLORS.primary : COLORS.gray3,
                 }}
               >
-                Settings
+                Настройки
               </Text>
             </View>
           ),

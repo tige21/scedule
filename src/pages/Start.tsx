@@ -5,12 +5,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Main } from "./Main";
 import { StatusBar } from "expo-status-bar";
-import { authStore } from "../store/authStore";
 import { observer } from "mobx-react-lite";
 import SignIn from "./Authentication/SignIn";
 import { TabN } from "../navigation/Tab";
 import SignUp from "./Authentication/SignUp";
-import { RegisterScreen } from "./Authentication/RegisterScreen";
 import { getAccessToken, isAuthenticated, isToken } from "../store/auth/auth.helper";
 import Cookies from "js-cookie";
 import { getAsyncStorage } from "../utils/async-storage";
@@ -21,7 +19,7 @@ const Stack = createNativeStackNavigator();
 
 export const Start = observer(() => {
 
-
+  // ios - заглушка, чтобы можно было скипнуть экран авторизации на iphone 
   const [ios, setIos] = useState(true)
   const {refreshToken} = useAppSelector(state => state.auth)
 

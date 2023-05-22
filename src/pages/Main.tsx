@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { StatusBar } from 'expo-status-bar';
 import {
   View,
   StyleSheet,
@@ -8,15 +9,14 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 // import { StatusBar } from "expo-status-bar";
 import { Btn } from "../components/Btn";
-import { authStore } from "../store/authStore";
 import { observer } from "mobx-react-lite";
 import { COLORS, FONTS, images, SIZES } from "../../constants";
 import Menu from "../components/Menu";
-import { menuStore } from "../store/menuStore";
 import axios from "axios";
 import Post from "../components/Post";
 import Container from "../components/Container";
@@ -27,7 +27,6 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { countSlice } from "../store/reducers/countSlice";
 import { Agenda } from "react-native-calendars";
-import { StatusBar } from "react-native";
 import { ScheduleItem } from "../components/ScheduleItem";
 
 interface Item {
@@ -50,7 +49,7 @@ export const Main = observer(() => {
 
 
 
-  const [items, setItems] = useState<{[key: string]: Item[]}>({
+  const [items, setItems] = useState<{[key: string]: any}>({
     "2023-05-15": [
       {
         pairStart: "16:30",
@@ -403,13 +402,35 @@ export const Main = observer(() => {
   //   );
   // }
 
+  const renderDay = (day: any, item: any) => {
+    return (
+      <View style={styles.dayContainer}>
+        <Text style={styles.dayText}>
+          {day.day}
+        </Text>
+      </View>
+    )
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <Agenda
-        selected="2023-05-15"
-        items={items}
-        renderItem={ScheduleItem}
-      />
+      <StatusBar style="dark" />
+      <ScrollView
+        contentContainerStyle={styles.scrollContentContainer}
+        contentInset={{ bottom: 90 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Agenda
+          selected="2023-05-15"
+          items={items}
+          style={{height: "100%"}}
+          renderItem={ScheduleItem}
+          // renderDay={renderDay}
+          calendarHeight={500}
+        />
+    </ScrollView>
+
     </SafeAreaView>
   );
 });
@@ -418,10 +439,27 @@ const styles = StyleSheet.create({
   all: {
     backgroundColor: "white",
   },
+  scrollContentContainer: {
+    flexGrow: 1,
+  },
+  agendaContainer: {
+    paddingBottom: 10, // Дополнительный отступ для последнего элемента
+  },
+  dayContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dayText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    // Другие стили для числа
+  },
   container: {
+    backgroundColor: "white",
     flex: 1,
     justifyContent: "center",
   },
+  
   item: {
     backgroundColor: "white",
     flex: 1,
