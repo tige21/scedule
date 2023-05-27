@@ -14,7 +14,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Timetable from "../pages/Timetable";
+import Teachers from "../pages/Teachers";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +30,7 @@ export const TabN = () => {
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           // height: "11%",
-          height: 90,
+          height: "10%",
           // opacity: 0.9,
           position: "absolute",
 
@@ -74,8 +74,8 @@ export const TabN = () => {
       />
 
       <Tab.Screen
-        name="Timetable"
-        component={Timetable}
+        name="Teachers"
+        component={Teachers}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (

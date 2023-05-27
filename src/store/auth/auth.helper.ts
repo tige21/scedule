@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAsyncStorage } from "../../utils/async-storage";
 import { IUserResponse } from "../../api/user/user.interface";
-import { ITokens } from "./auth.service";
+
 import Cookies from 'js-cookie'
+import { ITokens } from "./auth.interface";
 
 
 export const getAccessToken = () => {

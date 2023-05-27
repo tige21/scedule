@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  StyleSheet,
+  Dimensions,
+  Modal,
+  Animated,
+} from "react-native";
 import { COLORS, SIZES, images, icons } from "../../../constants";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import FormInput from "../../components/FormInput";
@@ -8,43 +18,87 @@ import { observer } from "mobx-react-lite";
 import TextButton from "../../components/TextButton";
 import { Btn } from "../../components/Btn";
 import { useIsRightPasswordQuery, useLoginMutation } from "../../api/api";
-import { saveToStorage, saveTokenToStorage } from "../../store/auth/auth.helper";
+import {
+  saveToStorage,
+  saveTokenToStorage,
+} from "../../store/auth/auth.helper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { authSlice } from "../../store/auth/authSlice";
+import FastImage from "react-native-fast-image";
+import { isValidEmail  } from "../../utils/validate";
+
 
 const SignIn = observer(({ navigation }: any) => {
+  const [eye, setEye] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const fadeAnim = useState(new Animated.Value(0))[0];
 
 
-  const [eye, setEye] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, { data, isError, error, isLoading }] = useLoginMutation();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [login, {data, isError, error, isLoading}] = useLoginMutation()
+  const { addUser } = authSlice.actions;
 
-  // const isPassword = useIsRightPasswordQuery()
+  const dispatch = useAppDispatch();
 
-  const {addUser} = authSlice.actions
-
-  const dispatch = useAppDispatch()
-  
-  const onSubmit = async () => {
-    const payload = {email, password}
-
-    login(payload)
-    
-    if(data?.accessToken){
-      const {accessToken, refreshToken} = data
-      saveToStorage(data);
-      dispatch(addUser(data))
+  const validateFields = () => {
+    if (!email || !password) {
+      setErrorMessage('Заполните все поля');
+    } else if (!isValidEmail(email)) {
+      setErrorMessage('Введите правильный email');
+    } else if (password.length < 6) {
+      setErrorMessage('Минимальная длинна пароля - 6 символов');
+    } else {
+      return true
     }
-    return data
-  }
+    setIsModalVisible(true);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
 
+  const closeModal = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsModalVisible(false);
+    });
+  };
+
+
+  const onSubmit = async () => {
+
+    if(validateFields()){
+      const payload = { email, password };
+      console.log('amogus')
+      login(payload);
+    }
+
+    
+
+    if (data?.accessToken) {
+      const { accessToken, refreshToken } = data;
+      saveToStorage(data);
+      dispatch(addUser(data));
+    }
+    return data;
+  };
+
+  const onChangeEye = () => {
+    setEye(!eye);
+  };
 
   // Здесь будет валидация
   // const onChangeEmail = () => {
-    
+
   // }
 
   // const onChangePassword = async () => {
@@ -52,7 +106,7 @@ const SignIn = observer(({ navigation }: any) => {
   //     setEye(isPassword)
   //   }
   //   setEye(false)
-    
+
   // }
 
   return (
@@ -73,6 +127,50 @@ const SignIn = observer(({ navigation }: any) => {
             marginBottom: 30,
           }}
         >
+
+
+      <Modal
+          visible={isModalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          <Animated.View
+            style={[
+              styles.modalContent,
+              { opacity: fadeAnim },
+            ]}
+          >
+            <Text style={styles.errorText}>{errorMessage}</Text>
+            <TouchableOpacity onPress={closeModal} >
+              <Text style={{color: 'white'}}>
+                close
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Modal>
+          {/* <FastImage
+            source={{
+              uri: images.schedulelogo,
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{
+              width: 250,
+              height: 57.1095571,
+            }}
+          /> */}
+
+          {/* <CachedImage 
+              style={{
+                width: 250,
+                height: 57.1095571,
+              }}
+              source={{ uri: images.schedulelogo }}
+            /> */}
+
           <Image
             source={images.schedulelogo}
             resizeMode="contain"
@@ -118,7 +216,7 @@ const SignIn = observer(({ navigation }: any) => {
 
         <FormInput
           label="Email"
-          placeholder=''
+          placeholder=""
           appendComponent={
             <View
               style={{
@@ -130,19 +228,18 @@ const SignIn = observer(({ navigation }: any) => {
                 style={{
                   height: 20,
                   width: 20,
-                  tintColor:
-                    email == "" ? COLORS.gray : COLORS.green,
+                  tintColor: isValidEmail(email) ? COLORS.green : COLORS.gray,
                 }}
               />
             </View>
           }
           onChangeText={setEmail}
         />
-
+      
         <FormInput
           label="Пароль"
-          placeholder=''
-          secureTextEntry={authStore.eye}
+          placeholder=""
+          secureTextEntry={eye}
           onChangeText={setPassword}
           appendComponent={
             <TouchableOpacity
@@ -151,7 +248,7 @@ const SignIn = observer(({ navigation }: any) => {
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
-              onPress={() => authStore.setEye()}
+              onPress={onChangeEye}
             >
               <Image
                 source={eye ? icons.eye_close : icons.eye}
@@ -176,7 +273,7 @@ const SignIn = observer(({ navigation }: any) => {
             paddingRight: SIZES.padding,
           }}
         >
-          <CustomSwitcher />
+          {/* <CustomSwitcher /> */}
           <TextButton
             label="Забыли пароль?"
             labelColor={COLORS.gray}
@@ -230,9 +327,34 @@ const SignIn = observer(({ navigation }: any) => {
             onPress={() => navigation.navigate("SignUp")}
           />
         </View>
+
+        
       </KeyboardAwareScrollView>
+      
     </View>
   );
+});
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: COLORS.red2,
+    padding: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'white',
+    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default SignIn;

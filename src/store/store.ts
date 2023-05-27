@@ -12,7 +12,6 @@ import {
 	persistStore
 } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { countSlice } from './reducers/countSlice'
 import { api } from '../api/api'
 import { userSlice } from './users/user.slice'
 import { setupListeners } from '@reduxjs/toolkit/dist/query/react'
@@ -21,7 +20,6 @@ import { authSlice } from './auth/authSlice'
 
 
 const rootReducer = combineReducers({
-	count: countSlice.reducer,
 	auth: authSlice.reducer,
 	[api.reducerPath]: api.reducer
 })

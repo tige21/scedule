@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState, memo, useCallback, useMemo } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   StyleSheet,
@@ -25,7 +25,6 @@ import { useActions } from "../hooks/useActions";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
-import { countSlice } from "../store/reducers/countSlice";
 import { Agenda } from "react-native-calendars";
 import { ScheduleItem } from "../components/ScheduleItem";
 
@@ -33,39 +32,35 @@ interface Item {
   pairStart: string;
   pairNum: string;
   pairEnd: string;
-  pairTitle:
-  string;
+  pairTitle: string;
   teacher: string;
   auditory: string;
   pairType: string;
   name?: string;
-    height?: number;
-    day?: string;
+  height?: number;
+  day?: string;
 }
 
-
-export const Main = observer(() => {
+export const Main = () => {
   const dispatch = useAppDispatch();
 
-
-
-  const [items, setItems] = useState<{[key: string]: any}>({
+  const [items, setItems] = useState<{ [key: string]: any }>({
     "2023-05-15": [
       {
         pairStart: "16:30",
         pairEnd: "18:05",
-        pairNum: '1',
+        pairNum: "1",
         pairTitle: "Организация и управление предприятиями",
         teacher: "Исаков А.В.",
         auditory: "ауд.: 501; Б22/2",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "18:15",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "19:50",
         pairTitle: "Высшая математика",
         teacher: "Мкртычян П.З.",
@@ -75,24 +70,23 @@ export const Main = observer(() => {
     ],
     "2023-05-16": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -102,24 +96,23 @@ export const Main = observer(() => {
     ],
     "2023-05-17": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -129,24 +122,23 @@ export const Main = observer(() => {
     ],
     "2023-05-18": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -156,24 +148,23 @@ export const Main = observer(() => {
     ],
     "2023-05-19": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -183,24 +174,23 @@ export const Main = observer(() => {
     ],
     "2023-05-20": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -210,24 +200,23 @@ export const Main = observer(() => {
     ],
     "2023-05-21": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -237,24 +226,23 @@ export const Main = observer(() => {
     ],
     "2023-05-22": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -264,24 +252,23 @@ export const Main = observer(() => {
     ],
     "2023-05-23": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -291,24 +278,23 @@ export const Main = observer(() => {
     ],
     "2023-05-24": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -318,24 +304,23 @@ export const Main = observer(() => {
     ],
     "2023-05-25": [
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "10:30",
-        pairNum: '1',
+        pairNum: "1",
         pairEnd: "12:00",
-        pairTitle:
-          "Элективные дисциплины по физической культуре и спорту",
+        pairTitle: "Элективные дисциплины по физической культуре и спорту",
         teacher: "Сапсаева Т.В.; Винтовкина Н.Е.; Полищук Н.В.",
         auditory: "ауд.: Спортивные площадки",
         pairType: "Практические занятия",
       },
       {
-        name: 'kek',
+        name: "kek",
         height: 2,
-        day: 'amogus',
+        day: "amogus",
         pairStart: "13:00",
-        pairNum: '2',
+        pairNum: "2",
         pairEnd: "14:35",
         pairTitle: "Физика",
         teacher: "Кузенов С.Р.",
@@ -343,50 +328,48 @@ export const Main = observer(() => {
         pairType: "Практические занятия",
       },
     ],
+  });
 
-  })
+  // const renderItem: any = useMemo((items: any) => {
+  //   return <ScheduleItem item={items} />;
+  // }, [items]);
 
-  
   // один из вариантов для отображения одного предмета
-  const renderItem = (item: any) => {
-    return (
-      <TouchableOpacity style={styles.item}>
-        <View style ={{
-          flexDirection: 'row',
-        
-          
-        }}>
-          <View style={{flexDirection: 'column'}}>
-              <Text style={{fontSize:20}}>{item.pairNum}</Text>
-              <Text>{item.pairStart}</Text>
-              <Text>{item.pairEnd}</Text>
-          </View>
+  // const renderItem = (item: any) => {
+  //   return (
+  //     <TouchableOpacity style={styles.item}>
+  //       <View style ={{
+  //         flexDirection: 'row',
 
-          <View style={{
-            flexDirection: 'column',
-            height: "100%",
-            marginLeft: 10,
-            borderColor:'red',
-            borderBottomWidth:1,
-            borderTopWidth:1
-          }}>
-              <Text style={{fontSize:20}}>{item.pairTitle}</Text>
-              <Text>{item.auditory}</Text>
-              <Text>{item.pairType}</Text>
-              <Text style={{fontSize: 7}}>{item.teacher}</Text>
+  //       }}>
+  //         <View style={{flexDirection: 'column'}}>
+  //             <Text style={{fontSize:20}}>{item.pairNum}</Text>
+  //             <Text>{item.pairStart}</Text>
+  //             <Text>{item.pairEnd}</Text>
+  //         </View>
 
+  //         <View style={{
+  //           flexDirection: 'column',
+  //           height: "100%",
+  //           marginLeft: 10,
+  //           borderColor:'red',
+  //           borderBottomWidth:1,
+  //           borderTopWidth:1
+  //         }}>
+  //             <Text style={{fontSize:20}}>{item.pairTitle}</Text>
+  //             <Text>{item.auditory}</Text>
+  //             <Text>{item.pairType}</Text>
+  //             <Text style={{fontSize: 7}}>{item.teacher}</Text>
 
-            </View>
+  //           </View>
 
-        </View>
+  //       </View>
 
+  //       <Text>{item.pairTitle}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
 
-        <Text>{item.pairTitle}</Text>
-      </TouchableOpacity>
-    );
-  };
-
- 
   // Код для подгрузки данных
   // if (isLoading) {
   //   return (
@@ -405,35 +388,25 @@ export const Main = observer(() => {
   const renderDay = (day: any, item: any) => {
     return (
       <View style={styles.dayContainer}>
-        <Text style={styles.dayText}>
-          {day.day}
-        </Text>
+        <Text style={styles.dayText}>{day.day}</Text>
       </View>
-    )
-  }
-
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
-      <ScrollView
-        contentContainerStyle={styles.scrollContentContainer}
-        contentInset={{ bottom: 90 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Agenda
-          selected="2023-05-15"
-          items={items}
-          style={{height: "100%"}}
-          renderItem={ScheduleItem}
-          // renderDay={renderDay}
-          calendarHeight={500}
-        />
-    </ScrollView>
 
+      <Agenda
+        
+        selected="2023-05-15"
+        items={items}
+        renderItem={ScheduleItem}
+        // renderDay={renderDay}
+      />
     </SafeAreaView>
   );
-});
+};
 
 const styles = StyleSheet.create({
   all: {
@@ -446,12 +419,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10, // Дополнительный отступ для последнего элемента
   },
   dayContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   dayText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     // Другие стили для числа
   },
   container: {
@@ -459,7 +432,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  
+
   item: {
     backgroundColor: "white",
     flex: 1,

@@ -13,7 +13,7 @@ interface IUser {
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.31.214:3000' }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://192.168.31.214:4200" }),
   endpoints: (builder) => ({
     getAllUsers: builder.query<IUser[], void>({
       query: () => "/",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text} from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 import { COLORS } from "../../constants";
@@ -113,7 +113,6 @@ export const ScheduleItem = (item: any) => {
                     <View 
                         style={{
                             flexDirection: 'row',
-                            marginTop: 3,
                         }}
                     >
 

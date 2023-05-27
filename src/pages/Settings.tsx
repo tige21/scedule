@@ -6,7 +6,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { authStore } from "../store/authStore";
 import { StatusBar } from "expo-status-bar";
 import Container from "../components/Container";
 import { ScheduleItem } from "../components/ScheduleItem";
@@ -23,6 +22,7 @@ export const Settings = () => {
 
   const handleLogout = async() => {
     await logout()
+    console.log('kek')
     dispatch(removeUser())
   }
 
@@ -30,19 +30,19 @@ export const Settings = () => {
     <View>
       <StatusBar hidden={false} />
     
-        <SafeAreaView>
-        <PageContainer>
-        <View
-          style={{
-            position: "absolute",
-            left: 20,
-            right: 20,
-            alignItems: "center",
-            width: wp(90),
-            height: hp(100),
-            top: 15,
-          }}
+        <SafeAreaView
+        style={{
+          position: "absolute",
+          left: 20,
+          right: 20,
+          alignItems: "center",
+          width: wp(90),
+          height: hp(100),
+          top: 15,
+        }}
         >
+        
+        
           <Image
             source={images.Billy}
             style={{
@@ -54,7 +54,7 @@ export const Settings = () => {
           />
           <Text
             style={{
-              fontSize: SIZES.h2,
+              fontSize: SIZES.h1,
               marginBottom: 2,
             }}
           >
@@ -97,8 +97,8 @@ export const Settings = () => {
               Log out
             </Text>
           </TouchableOpacity>
-        </View>
-      </PageContainer>
+       
+
         </SafeAreaView>
       
     </View>
