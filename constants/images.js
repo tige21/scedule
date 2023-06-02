@@ -11,6 +11,7 @@ const success = require("../assets/images/success.png")
 const schedule = require("../assets/images/Schedule.png")
 const schedulelogo = require("../assets/images/schedulelogo.png")
 const Billy = require("../assets/images/Billy.png")
+const ItsMe = require("../assets/images/ItsMe.png")
 export default {
     background_01,
     background_02,
@@ -25,4 +26,5 @@ export default {
     schedule,
     schedulelogo,
     Billy,
+    ItsMe,
 }

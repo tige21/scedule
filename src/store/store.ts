@@ -16,11 +16,13 @@ import { api } from '../api/api'
 import { userSlice } from './users/user.slice'
 import { setupListeners } from '@reduxjs/toolkit/dist/query/react'
 import { authSlice } from './auth/authSlice'
+import { scheduleSlice } from './schedule/schedule.slice'
 
 
 
 const rootReducer = combineReducers({
 	auth: authSlice.reducer,
+	schedule: scheduleSlice.reducer,
 	[api.reducerPath]: api.reducer
 })
 

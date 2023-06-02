@@ -3,13 +3,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Settings } from "../pages/Settings";
-import { Main } from "../pages/Main";
+import { Main, Schedule } from "../pages/Schedule";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, FONTS, icons } from "../../constants";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -27,20 +27,16 @@ export const TabN = () => {
         tabBarShowLabel: false,
         lazy: true,
         tabBarStyle: {
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          // height: "11%",
           height: "10%",
-          // opacity: 0.9,
+        
           position: "absolute",
-
           zIndex: 40,
         },
       })}
     >
       <Tab.Screen
-        name="Main"
-        component={Main}
+        name="Schedule"
+        component={Schedule}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (

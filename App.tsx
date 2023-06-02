@@ -14,7 +14,7 @@ import { Btn } from "./src/components/Btn";
 import { Login } from "./src/pages/Login";
 import { Register } from "./src/pages/Register";
 import { Start } from "./src/pages/Start";
-import { Main } from "./src/pages/Main";
+import { Main } from "./src/pages/Schedule";
 import React from "react";
 import store, {persistor} from "./src/store/store";
 import { Provider } from "react-redux";

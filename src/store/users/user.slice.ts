@@ -5,12 +5,14 @@ import { register } from "./user.actions"
 
 export interface IInitialState {
 	user: any
-	isLoading: boolean
+    faculty: string,
+    group: string,
 }
 
 const initialState: IInitialState  = {
     user: getAsyncStorage('user'),
-    isLoading: false
+    faculty: '',
+    group: ''
 }
 
 
@@ -18,19 +20,12 @@ const initialState: IInitialState  = {
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
-    extraReducers: builder => {
-        builder 
-            .addCase(register.pending, state => {
-                state.isLoading = true
-            })
-            .addCase(register.fulfilled, (state, {payload} )=> {
-                state.isLoading = false
-                state.user = payload.email
-            })
-            .addCase(register.rejected, state => {
-                state.isLoading = false
-                state.user = null
-            })
-    }
+    reducers: {
+        addGroup:(state, action) => {
+            const {group} = action.payload
+            state.group = group
+          },
+
+    },
+    
 })
